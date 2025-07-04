@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+langchain
+langchain-huggingface
+langchain-community
+langchain-groq
+langchain-openai
+sentence-transformers
+python-docx
+python-pptx
+pandas
+pymupdf
+PyPDF2
+faiss-cpu
+PyJWT

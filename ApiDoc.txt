@@ -1,0 +1,62 @@
+# API Documentation
+
+## Endpoints
+
+### 1. `POST /embed`
+Upload a file, extract its text, and embed it into the vector store.
+
+**Request:**
+- Content-Type: multipart/form-data
+- Form field: `file` (the file to upload)
+
+**Response (200):**
+```
+{
+  "message": "Embedding successful",
+  "source_type": "pdf_file|text_file|word_file|csv_file|unknown",
+  "vectorstore_info": { ... }
+}
+```
+
+**Response (500):**
+```
+{
+  "error": "Error message"
+}
+```
+
+---
+
+### 2. `POST /query`
+Query the vector store and get a response from the LLM.
+
+**Request:**
+- Content-Type: application/json
+- Body:
+```
+{
+  "query": "Your question here"
+}
+```
+
+**Response (200):**
+```
+{
+  "query": "Your question here",
+  "response": "LLM response"
+}
+```
+
+**Response (500):**
+```
+{
+  "error": "Error message"
+}
+```
+
+---
+
+## Notes
+- Make sure to upload supported file types: PDF, TXT, DOCX, XLSX, CSV, PPTX.
+- Environment variables must be set for LLM providers (see `.env.example`).
+- For production, run with `uvicorn src.api:app --host 0.0.0.0 --port 8000`. 
