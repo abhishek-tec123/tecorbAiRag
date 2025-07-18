@@ -70,7 +70,7 @@ coverage.xml
 
 # PDF/Vectorstore/Artifacts
 vectorstores/
-docs-pdf/
+# docs-pdf/
 *.pdf
 *.pkl
 *.faiss

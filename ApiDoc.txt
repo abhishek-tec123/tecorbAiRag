@@ -60,3 +60,17 @@ Query the vector store and get a response from the LLM.
 - Make sure to upload supported file types: PDF, TXT, DOCX, XLSX, CSV, PPTX.
 - Environment variables must be set for LLM providers (see `.env.example`).
 - For production, run with `uvicorn src.api:app --host 0.0.0.0 --port 8000`. 
+
+
+
+curl -X POST http://localhost:8000/generate-token
+
+curl -X POST http://localhost:8000/query \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MjY0OTI0NX0.oJyG2rzZUtmy2LYHwRI1ivNBF_Ac5ErZA5Q3DMZv5r4" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "what is langchain"}'
+
+
+curl -X POST http://localhost:8000/embed \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MjY0OTI0NX0.oJyG2rzZUtmy2LYHwRI1ivNBF_Ac5ErZA5Q3DMZv5r4" \
+  -F "file=@/Users/abhishek/Desktop/ragTecorbAI/docs-pdf/tutorial.pdf"
