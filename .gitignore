@@ -66,8 +66,8 @@ coverage.xml
 .DS_Store
 
 # dotenv
-.env.*
-
+.env
+.env
 # PDF/Vectorstore/Artifacts
 vectorstores/
 # docs-pdf/
