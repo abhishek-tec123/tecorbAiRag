@@ -70,8 +70,8 @@ coverage.xml
 .env
 # PDF/Vectorstore/Artifacts
 vectorstores/
-# docs-pdf/
-*.pdf
+
+
 *.pkl
 *.faiss
 
