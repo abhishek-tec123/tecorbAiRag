@@ -59,6 +59,7 @@ class Retriever:
     def combined_page_content(self, query: str, k: int = 3):
         """Returns concatenated page content from top documents"""
         results = self.search(query, k=k)
+        print(results)
         return "\n\n".join([doc.page_content for doc, _ in results])
 
     async def generate_llm_response(self, query: str, k: int = 3, custom_prompt: str = None, llm_provider: str = "groq"):
