@@ -12,19 +12,19 @@ os.environ["TOKENIZERS_PARALLELISM"] = "true"
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-# === Global Configuration ===
+# Dynamic path setup
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-VECTORSTORE_PATH = "/Users/abhishek/Desktop/ragTecorbAI/src/vectorstores"
+DEFAULT_VECTORSTORE_PATH = os.getenv("VECTORSTORE_PATH", "./vectorstores")
 
 
-# === Retriever Class ===
 class Retriever:
     def __init__(self, model_name: str = MODEL_NAME, embed_model=None):
         self.embed_model = embed_model if embed_model is not None else HuggingFaceEmbeddings(model_name=model_name)
         self.vector_store = None
         self.vectorstore_path = None
 
-    def load_vector_store(self, path: str = VECTORSTORE_PATH):
+    def load_vector_store(self, path: str = None):
+        path = path or DEFAULT_VECTORSTORE_PATH
         if not os.path.exists(path):
             logger.error(f"No FAISS index found at: {path}")
             raise FileNotFoundError(f"No FAISS index found at: {path}")
@@ -38,7 +38,6 @@ class Retriever:
         self.vectorstore_path = path
 
     def search(self, query: str, k: int = 3):
-        """Returns list of (Document, score) tuples"""
         if not self.vector_store:
             logger.error("Vector store not loaded. Call load_vector_store() first.")
             raise ValueError("Vector store not loaded.")
@@ -47,7 +46,6 @@ class Retriever:
         return self.vector_store.similarity_search_with_score(query, k=k)
 
     def simple_retrieve(self, query: str, k: int = 3):
-        """Returns list of Documents using as_retriever().invoke()"""
         if not self.vector_store:
             logger.error("Vector store not loaded. Call load_vector_store() first.")
             raise ValueError("Vector store not loaded.")
@@ -57,16 +55,10 @@ class Retriever:
         return retriever.invoke(query)
 
     def combined_page_content(self, query: str, k: int = 3):
-        """Returns concatenated page content from top documents"""
         results = self.search(query, k=k)
-        print(results)
         return "\n\n".join([doc.page_content for doc, _ in results])
 
     async def generate_llm_response(self, query: str, k: int = 3, custom_prompt: str = None, llm_provider: str = "groq"):
-        """
-        Generate a response using the retrieved context and an external LLM.
-        Requires an async generate_response_from_llm(context, query, ...)
-        """
         logger.info(f"Generating LLM response for query: {query}")
         context_text = self.combined_page_content(query, k=k)
         return await generate_response_from_llm(
