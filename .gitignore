@@ -66,10 +66,11 @@ coverage.xml
 .DS_Store
 
 # dotenv
-.env
+ragWithUnstructuredData/.env
+src/.env
 .env
 # PDF/Vectorstore/Artifacts
-vectorstores/
+# vectorstores/
 
 
 *.pkl
